@@ -6,21 +6,25 @@ import { useState } from 'react';
 
 
 
-let projectList = [
-  {title: 'Placeholder Project', description: 'Lorem Ipsum', dueDate: Date.now(), tasks:["placeholder task 1", "placeholder task 2"]},
-  {title: 'Placeholder Project 2', description: 'Lorem Ipsum', dueDate: Date.now(), tasks:["placeholder task 1", "placeholder task 2"]}
+let initialProjectList = [
+  {title: 'Placeholder Project', description: 'Lorem Ipsum 1', dueDate: Date.now(), tasks:[" project 1 placeholder task 1", "proj 1 placeholder task 2"]},
+  {title: 'Placeholder Project 2', description: 'Lorem Ipsum 2', dueDate: Date.now(), tasks:["projec 2 placeholder task 1", "proj 2 placeholder task 2"]},
+  {title: 'Placeholder Project 3', description: 'Lorem Ipsum 3', dueDate: Date.now(), tasks:["projec 3 placeholder task 1", "proj32 placeholder task 2"]}
 ]
 
-// let projectList = []
+// let initialProjectList = []
 
 function App() {
 
+  const [projectList, setProjectList] = useState(initialProjectList);
   const [renderedProject, setRenderedProject] = useState(projectList[0]);
   const [addingMode, setAddingMode] = useState(false);
+
 
   function createProjectHandler(){
     //console.log("clicked ADD PROJECT")
     setAddingMode(true);
+    
   }
 
   function projectSelectHandler(e){
@@ -32,31 +36,62 @@ function App() {
   }
 
   function addProject(newProjectDetails){
-    projectList.push(newProjectDetails);
+    let newProjectList = projectList;
+    newProjectList.push(newProjectDetails)
+
+    setProjectList(newProjectList)
+    setAddingMode(false);
+
+    setRenderedProject(newProjectDetails)
   }
 
   function deleteProjectHandler(){
-    let index = projectList.indexOf(renderedProject);
-    console.log("the rendered project is:")
-    console.log(renderedProject)
-
-    console.log("the rendered project index is:")
-    console.log(index)
-
-    console.log("the projectlist is:")
-    console.log(projectList)
-
-    console.log("the output is:")
-    projectList = projectList.splice(index, 1);
-    console.log(projectList)
+    setProjectList(projectList.filter(project => project !== renderedProject))
+    setRenderedProject(projectList[0])
   }
 
   function addTask(){
-
+    console.log("task added")
   }
 
-  function removeTask(){
+  function removeTask(e){
+    let newProjectList = []
+    
+    let index = projectList.indexOf(renderedProject)
 
+    projectList.forEach(function(project){
+      if (renderedProject === project) {
+
+        let newTaskList = []
+
+        project.tasks.forEach(function(task){
+          if (task=== e.target.value){
+          } else {
+            newTaskList.push(task);
+          }
+        })
+
+        let changeProject = {
+          title:project.title,
+          description:project.description,
+          dueDate: project.dueDate,
+          tasks: newTaskList}
+        
+        newProjectList.push(changeProject)
+
+      } else {
+        newProjectList.push(project)
+      }
+    })
+    //console.log(newProjectList);
+    console.log("executed")
+    setProjectList(newProjectList);
+    setRenderedProject(projectList[index]);
+    console.log(renderedProject)
+  }
+
+  function debugHandler(){
+    console.log(projectList)
   }
 
   return (
@@ -64,10 +99,24 @@ function App() {
       <h1 className="my-8 text-center text-5xl font-bold">Hello World</h1>
       <Sidebar projectList={projectList} createHandler={createProjectHandler} projectSelectHandler={(e)=>projectSelectHandler(e)}/>
 
-      {addingMode? 
-      <NewProject handleCancel={()=>setAddingMode(false)} handleAddProject={addProject} projectList={projectList}/>:
-      <DisplayProject projectList={projectList} createHandler={createProjectHandler} renderedProject={renderedProject} deleteHandler={deleteProjectHandler}/>}
+      {
+        addingMode? 
+        <NewProject 
+          handleCancel={()=>setAddingMode(false)} 
+          handleAddProject={addProject} 
+          projectList={projectList}/>:
+        <DisplayProject 
+          projectList={projectList} 
+          createHandler={createProjectHandler} 
+          renderedProject={renderedProject} 
+          deleteProjectHandler={deleteProjectHandler} 
+          deleteTaskHandler={(e) => removeTask(e)} 
+          addTaskHandler={addTask}/>
+      }
 
+
+      <hr></hr>
+      <button onClick={debugHandler}>DEBUGGGGGGGGGGGGGGGGGGGGGG</button>
     </>
   );
 }
