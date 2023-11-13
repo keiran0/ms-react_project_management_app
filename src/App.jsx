@@ -48,41 +48,13 @@ function App() {
     setRenderedProject(projectList[0])
   }
 
-  function addTask(){
-    //console.log("task added")
-  }
-
-  function removeTask(e){
-    e.preventDefault();
-    let newProjectList = []
-    let index = projectList.indexOf(renderedProject)
-
-    projectList.forEach(function(project){
-      if (project !== renderedProject) {
-        newProjectList.push(project);
-      } else {
-        let changedProject = {
-          title: project.title,
-          description: project.description,
-          dueDate: project.dueDate,
-          tasks: []
-        }
-        project.tasks.forEach(function(task){
-          if (task === e.target.value){
-            //console.log("task skipped push" + e.target.value)
-          } else {
-            changedProject.tasks.push(task)
-          }
-        })
-        newProjectList.push(changedProject)
-      }
-    })
-    setProjectList(newProjectList);
-    setRenderedProject(projectList[index])
-  }
 
   function debugHandler(){
     console.log(projectList)
+  }
+
+  function addTask(){
+    console.log("task added")
   }
 
   return (
@@ -98,10 +70,10 @@ function App() {
           projectList={projectList}/>:
         <DisplayProject 
           projectList={projectList} 
+          setProjectList={setProjectList}
           createHandler={createProjectHandler} 
           renderedProject={renderedProject} 
           deleteProjectHandler={deleteProjectHandler}
-          deleteTaskHandler={(e) => removeTask(e)} 
           addTaskHandler={addTask}
           />
       }

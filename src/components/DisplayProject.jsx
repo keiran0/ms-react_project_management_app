@@ -2,7 +2,12 @@
 import NoProject from "./NoProject";
 import Project from "./Project";
 
-export default function DisplayProject({projectList, createHandler, renderedProject = projectList[0], deleteProjectHandler, deleteTaskHandler, addTaskHandler}){
+export default function DisplayProject({
+    projectList, 
+    setProjectList,
+    createHandler, 
+    renderedProject = projectList[0], 
+    deleteProjectHandler}){
 
 
 
@@ -14,8 +19,8 @@ export default function DisplayProject({projectList, createHandler, renderedProj
             <NoProject createHandler={createHandler}/> 
             : <Project renderedProject={renderedProject} 
             deleteProjectHandler={deleteProjectHandler} 
-            deleteTaskHandler={deleteTaskHandler} 
-            addTaskHandler={addTaskHandler}
+            projectList={projectList}
+            setProjectList={setProjectList}
             /> }
         </>
     )
