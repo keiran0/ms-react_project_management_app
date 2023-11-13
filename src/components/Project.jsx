@@ -17,12 +17,13 @@ export default function Project({
             <input type="text"></input>
             <button onClick={addTaskHandler}>Add Task</button>
             {renderedProject.tasks.length < 1 ? <p>No tasks</p> : renderedProject.tasks.map(task=>
-            <Task key={task} 
-            task={task} 
-            setProjectList={setProjectList} 
-            projectList={projectList} 
-            renderedProject={renderedProject}/>
-                )
+                <Task 
+                key={task} 
+                task={task}
+                setProjectList={setProjectList} 
+                projectList={projectList} 
+                renderedProject={renderedProject}/>
+            )
             }
             
         </>

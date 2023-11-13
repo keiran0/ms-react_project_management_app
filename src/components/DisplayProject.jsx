@@ -9,11 +9,8 @@ export default function DisplayProject({
     renderedProject = projectList[0], 
     deleteProjectHandler}){
 
-
-
     return(
         <>
-            {/* <p>{renderedProject.title}</p> */}
 
             {projectList.length < 1 ? 
             <NoProject createHandler={createHandler}/> 

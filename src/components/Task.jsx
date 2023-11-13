@@ -1,36 +1,22 @@
+
 export default function Task({task, projectList, setProjectList, renderedProject}) {
 
     function deleteTaskHandler(e){
 
         e.preventDefault();
-        let newProjectList = []
 
-        projectList.forEach(function(project){
-            if (project===renderedProject){
-                let alteredProject = {
-                    title:project.title,
-                    description: project.description,
-                    dueDate: project.dueDate,
-                    tasks: []
-                }
-
-                project.tasks.forEach(function(task){
-                    if (task===e.target.value) {
-
-                    } else {
-                        alteredProject.tasks.push(task)
-                    }
-                })
-                newProjectList.push(alteredProject)
-            } else {
-                newProjectList.push(project);
+        setProjectList((projectList) => [
+            ...projectList.filter((project)=> project !== renderedProject),
+            {
+                ...renderedProject,
+                tasks: renderedProject.tasks.filter((task)=> task !== e.target.value)
             }
-        })
-        console.log(newProjectList)
-        setProjectList(projectList => newProjectList);
-        console.log(projectList);
+        ])
+        console.log(projectList)
 
     }
+
+
 
     return (
         <form key={task}>
