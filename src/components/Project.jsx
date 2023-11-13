@@ -1,5 +1,7 @@
+import Task from './Task'
+
 export default function Project({renderedProject, deleteProjectHandler, deleteTaskHandler, addTaskHandler}){
-    
+
     return(
         <>
             <p>{renderedProject.title}</p>
@@ -9,11 +11,8 @@ export default function Project({renderedProject, deleteProjectHandler, deleteTa
             <h2>Tasks</h2>
             <input type="text"></input>
             <button onClick={addTaskHandler}>Add Task</button>
-            {renderedProject.tasks.length < 1 ? <p>No tasks</p> : renderedProject.tasks.map(task=>
-                <form key={task}>
-                    <label>{task}</label>
-                    <button onClick={deleteTaskHandler} value={task}>Clear</button>
-                </form>)
+            {renderedProject.tasks.length < 1 ? <p>No tasks</p> : renderedProject.tasks.map(task=><Task task={task} deleteTaskHandler={deleteTaskHandler}/>
+                )
             }
         </>
     )

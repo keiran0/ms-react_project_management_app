@@ -22,9 +22,7 @@ function App() {
 
 
   function createProjectHandler(){
-    //console.log("clicked ADD PROJECT")
     setAddingMode(true);
-    
   }
 
   function projectSelectHandler(e){
@@ -51,7 +49,7 @@ function App() {
   }
 
   function addTask(){
-    console.log("task added")
+    //console.log("task added")
   }
 
   function removeTask(e){
@@ -59,7 +57,6 @@ function App() {
     let newProjectList = []
     let index = projectList.indexOf(renderedProject)
 
-    console.log(index)
     projectList.forEach(function(project){
       if (project !== renderedProject) {
         newProjectList.push(project);
@@ -71,9 +68,8 @@ function App() {
           tasks: []
         }
         project.tasks.forEach(function(task){
-          console.log(task);
           if (task === e.target.value){
-            console.log("task skipped push" + e.target.value)
+            //console.log("task skipped push" + e.target.value)
           } else {
             changedProject.tasks.push(task)
           }
@@ -106,7 +102,8 @@ function App() {
           renderedProject={renderedProject} 
           deleteProjectHandler={deleteProjectHandler}
           deleteTaskHandler={(e) => removeTask(e)} 
-          addTaskHandler={addTask}/>
+          addTaskHandler={addTask}
+          />
       }
 
 
