@@ -17,7 +17,7 @@ let initialProjectList = [
 function App() {
 
   const [projectList, setProjectList] = useState(initialProjectList);
-  const [renderedProject, setRenderedProject] = useState(projectList[0]);
+  const [renderedProject, setRenderedProject] = useState(projectList[0]); //maybe better to set this as derived value and set the usestate as index of the proj to be rendered.
   const [addingMode, setAddingMode] = useState(false);
 
 
@@ -55,39 +55,34 @@ function App() {
   }
 
   function removeTask(e){
+    e.preventDefault();
     let newProjectList = []
-    
     let index = projectList.indexOf(renderedProject)
 
+    console.log(index)
     projectList.forEach(function(project){
-      if (renderedProject === project) {
-
-        let newTaskList = []
-
+      if (project !== renderedProject) {
+        newProjectList.push(project);
+      } else {
+        let changedProject = {
+          title: project.title,
+          description: project.description,
+          dueDate: project.dueDate,
+          tasks: []
+        }
         project.tasks.forEach(function(task){
-          if (task=== e.target.value){
+          console.log(task);
+          if (task === e.target.value){
+            console.log("task skipped push" + e.target.value)
           } else {
-            newTaskList.push(task);
+            changedProject.tasks.push(task)
           }
         })
-
-        let changeProject = {
-          title:project.title,
-          description:project.description,
-          dueDate: project.dueDate,
-          tasks: newTaskList}
-        
-        newProjectList.push(changeProject)
-
-      } else {
-        newProjectList.push(project)
+        newProjectList.push(changedProject)
       }
     })
-    //console.log(newProjectList);
-    console.log("executed")
     setProjectList(newProjectList);
-    setRenderedProject(projectList[index]);
-    console.log(renderedProject)
+    setRenderedProject(projectList[index])
   }
 
   function debugHandler(){
@@ -109,7 +104,7 @@ function App() {
           projectList={projectList} 
           createHandler={createProjectHandler} 
           renderedProject={renderedProject} 
-          deleteProjectHandler={deleteProjectHandler} 
+          deleteProjectHandler={deleteProjectHandler}
           deleteTaskHandler={(e) => removeTask(e)} 
           addTaskHandler={addTask}/>
       }

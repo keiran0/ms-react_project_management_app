@@ -6,9 +6,13 @@ export default function DisplayProject({projectList, createHandler, renderedProj
     return(
         <>
             {/* <p>{renderedProject.title}</p> */}
+            
             {projectList.length < 1 ? 
             <NoProject createHandler={createHandler}/> 
-            : <Project renderedProject={renderedProject} deleteProjectHandler={deleteProjectHandler} deleteTaskHandler={deleteTaskHandler} addTaskHandler={addTaskHandler}/> }
+            : <Project renderedProject={renderedProject} 
+            deleteProjectHandler={deleteProjectHandler} 
+            deleteTaskHandler={deleteTaskHandler} 
+            addTaskHandler={addTaskHandler}/> }
         </>
     )
 }
