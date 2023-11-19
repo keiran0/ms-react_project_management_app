@@ -1,8 +1,10 @@
 import Sidebar from "./components/Sidebar";
-import DisplayProject from "./components/DisplayProject";
 import NewProject from "./components/NewProject";
+import Project from './components/Project';
+import NoProject from './components/NoProject';
 
 import { useState } from 'react';
+import { render } from "react-dom";
 
 
 
@@ -17,7 +19,7 @@ let initialProjectList = [
 function App() {
 
   const [projectList, setProjectList] = useState(initialProjectList);
-  const [renderedProject, setRenderedProject] = useState(projectList[0]); //maybe better to set this as derived value and set the usestate as index of the proj to be rendered.
+  const [renderedProject, setRenderedProject] = useState(0); //maybe better to set this as derived value and set the usestate as index of the proj to be rendered.
   const [addingMode, setAddingMode] = useState(false);
 
 
@@ -28,7 +30,7 @@ function App() {
   function projectSelectHandler(e){
     projectList.forEach(function(project){
       if (project.title === e.target.value){
-        setRenderedProject(project);
+        setRenderedProject(projectList.indexOf(project));
       }
     })
   }
@@ -40,47 +42,65 @@ function App() {
     setProjectList(newProjectList)
     setAddingMode(false);
 
-    setRenderedProject(newProjectDetails)
+    setRenderedProject(projectList.indexOf(newProjectDetails))
   }
 
   function deleteProjectHandler(){
-    setProjectList(projectList.filter(project => project !== renderedProject))
-    setRenderedProject(projectList[0])
+    let newProjectList = projectList.filter(project => project !== projectList[renderedProject])
+    setProjectList(newProjectList)
+    setRenderedProject(0)
   }
 
+  function addTaskHandler(e){
+    let newList = [
+      ...projectList.filter(project => project !== projectList[renderedProject]),
+      {
+        title: projectList[renderedProject].title,
+        description: projectList[renderedProject].description,
+        tasks: [
+          ...projectList[renderedProject].tasks,
+          e.current.value
+        ]
+      }
+    ]
 
-  function debugHandler(){
-    console.log(projectList)
+    setProjectList(newList)
+    setRenderedProject(projectList.length-1)
+
   }
 
-  function addTask(){
-    console.log("task added")
+  function deleteTaskHandler(e){
+    let newList = [
+      ...projectList.filter(project => project != projectList[renderedProject]),
+      {
+        ...projectList[renderedProject],
+        tasks: projectList[renderedProject].tasks.filter(task => task != e)
+      }
+    ]
+
+    setProjectList(newList)
+    setRenderedProject(projectList.length-1)
   }
+
 
   return (
     <>
-      <h1 className="my-8 text-center text-5xl font-bold">Hello World</h1>
-      <Sidebar projectList={projectList} createHandler={createProjectHandler} projectSelectHandler={(e)=>projectSelectHandler(e)}/>
+      <Sidebar projectList={projectList} projectSelectHandler={projectSelectHandler} createHandler={createProjectHandler}/>
+      { addingMode ? <NewProject handleCancel={()=>setAddingMode(false)} handleAddProject={addProject}/> : null }
+      {projectList.length < 1 ? 
+            <NoProject 
+                createHandler={createProjectHandler}/> 
+            : <Project 
+                renderedProject={projectList[renderedProject]} 
+                deleteProjectHandler={deleteProjectHandler}
+                addTaskHandler={addTaskHandler}
+                deleteTaskHandler={deleteTaskHandler}
+            /> }
 
-      {
-        addingMode? 
-        <NewProject 
-          handleCancel={()=>setAddingMode(false)} 
-          handleAddProject={addProject} 
-          projectList={projectList}/>:
-        <DisplayProject 
-          projectList={projectList} 
-          setProjectList={setProjectList}
-          createHandler={createProjectHandler} 
-          renderedProject={renderedProject} 
-          deleteProjectHandler={deleteProjectHandler}
-          addTaskHandler={addTask}
-          />
-      }
+    
 
-
-      <hr></hr>
-      <button onClick={debugHandler}>DEBUGGGGGGGGGGGGGGGGGGGGGG</button>
+    
+    
     </>
   );
 }

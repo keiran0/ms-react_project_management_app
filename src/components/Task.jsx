@@ -1,28 +1,21 @@
 
-export default function Task({task, projectList, setProjectList, renderedProject}) {
+import {useRef} from 'react';
 
-    function deleteTaskHandler(e){
+export default function Task({task, deleteTaskHandler}){
 
-        e.preventDefault();
+    let taskName = useRef();
 
-        setProjectList((projectList) => [
-            ...projectList.filter((project)=> project !== renderedProject),
-            {
-                ...renderedProject,
-                tasks: renderedProject.tasks.filter((task)=> task !== e.target.value)
-            }
-        ])
-        console.log(projectList)
-
+    function deleteTask(){
+        deleteTaskHandler(taskName.current.innerHTML)
+        //console.log(taskName.current.innerHTML)
     }
 
-
-
-    return (
-        <form key={task}>
-            <label>{task}</label>
-            <button onClick={(e)=>deleteTaskHandler(e)} value={task}>TEST CLICK ME!!!!!!!!!</button>
-        </form>
-
+    return(
+        <>
+            <ul>
+                <span ref={taskName}>{task}</span>
+                <button onClick={deleteTask}>Clear</button>
+            </ul>
+        </>
     )
 }
