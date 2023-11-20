@@ -4,16 +4,24 @@ export default function Project({
     renderedProject,
     deleteProjectHandler,
     addTaskHandler,
-    deleteTaskHandler}){
+    deleteTaskHandler }) {
 
-    return(
-        <>
-            <p>{renderedProject.title}</p>
-            <p>{renderedProject.description}</p>
-            <p>{renderedProject.dueDate}</p>
-            <button onClick={deleteProjectHandler}>Delete Project</button>
-            <Tasks renderedProject={renderedProject} addTask={addTaskHandler} deleteTaskHandler={deleteTaskHandler}/>
-            
-        </>
+    return (
+        <main>
+            <div className="flex justify-between my-10">
+                <div>
+                    <h2 className="text-3xl font-bold mb-5">{renderedProject.title}</h2>
+                    <p className="mb-5">{renderedProject.dueDate}</p>
+                    <p>{renderedProject.description}</p>
+
+                </div>
+                <div>
+                    <button onClick={deleteProjectHandler}>Delete</button>
+                </div>
+
+            </div>
+            <Tasks renderedProject={renderedProject} addTask={addTaskHandler} deleteTaskHandler={deleteTaskHandler} />
+
+        </main>
     )
 }

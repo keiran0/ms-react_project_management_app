@@ -1,21 +1,19 @@
 
-import {useRef} from 'react';
+import { useRef } from 'react';
 
-export default function Task({task, deleteTaskHandler}){
+export default function Task({ task, deleteTaskHandler }) {
 
     let taskName = useRef();
 
-    function deleteTask(){
+    function deleteTask() {
         deleteTaskHandler(taskName.current.innerHTML)
         //console.log(taskName.current.innerHTML)
     }
 
-    return(
-        <>
-            <ul>
-                <span ref={taskName}>{task}</span>
-                <button onClick={deleteTask}>Clear</button>
-            </ul>
-        </>
+    return (
+        <li className="grid grid-cols-3">
+            <span className="col-span-2" ref={taskName}>{task}</span>
+            <button className="text-end" onClick={deleteTask}>Clear</button>
+        </li>
     )
 }

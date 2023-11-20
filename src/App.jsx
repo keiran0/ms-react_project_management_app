@@ -4,17 +4,14 @@ import Project from './components/Project';
 import NoProject from './components/NoProject';
 
 import { useState } from 'react';
-import { render } from "react-dom";
 
+// let initialProjectList = [
+//   { title: 'Placeholder Project', description: 'Lorem Ipsum 1', dueDate: Date.now(), tasks: [" project 1 placeholder task 1", "proj 1 placeholder task 2"] },
+//   { title: 'Placeholder Project 2', description: 'Lorem Ipsum 2', dueDate: Date.now(), tasks: ["projec 2 placeholder task 1", "proj 2 placeholder task 2"] },
+//   { title: 'Placeholder Project 3', description: 'Lorem Ipsum 3', dueDate: Date.now(), tasks: ["projec 3 placeholder task 1", "proj32 placeholder task 2"] }
+// ]
 
-
-let initialProjectList = [
-  {title: 'Placeholder Project', description: 'Lorem Ipsum 1', dueDate: Date.now(), tasks:[" project 1 placeholder task 1", "proj 1 placeholder task 2"]},
-  {title: 'Placeholder Project 2', description: 'Lorem Ipsum 2', dueDate: Date.now(), tasks:["projec 2 placeholder task 1", "proj 2 placeholder task 2"]},
-  {title: 'Placeholder Project 3', description: 'Lorem Ipsum 3', dueDate: Date.now(), tasks:["projec 3 placeholder task 1", "proj32 placeholder task 2"]}
-]
-
-// let initialProjectList = []
+let initialProjectList = []
 
 function App() {
 
@@ -23,19 +20,19 @@ function App() {
   const [addingMode, setAddingMode] = useState(false);
 
 
-  function createProjectHandler(){
+  function createProjectHandler() {
     setAddingMode(true);
   }
 
-  function projectSelectHandler(e){
-    projectList.forEach(function(project){
-      if (project.title === e.target.value){
+  function projectSelectHandler(e) {
+    projectList.forEach(function (project) {
+      if (project.title === e.target.value) {
         setRenderedProject(projectList.indexOf(project));
       }
     })
   }
 
-  function addProject(newProjectDetails){
+  function addProject(newProjectDetails) {
     let newProjectList = projectList;
     newProjectList.push(newProjectDetails)
 
@@ -45,13 +42,13 @@ function App() {
     setRenderedProject(projectList.indexOf(newProjectDetails))
   }
 
-  function deleteProjectHandler(){
+  function deleteProjectHandler() {
     let newProjectList = projectList.filter(project => project !== projectList[renderedProject])
     setProjectList(newProjectList)
     setRenderedProject(0)
   }
 
-  function addTaskHandler(e){
+  function addTaskHandler(e) {
     let newList = [
       ...projectList.filter(project => project !== projectList[renderedProject]),
       {
@@ -65,11 +62,11 @@ function App() {
     ]
 
     setProjectList(newList)
-    setRenderedProject(projectList.length-1)
+    setRenderedProject(projectList.length - 1)
 
   }
 
-  function deleteTaskHandler(e){
+  function deleteTaskHandler(e) {
     let newList = [
       ...projectList.filter(project => project != projectList[renderedProject]),
       {
@@ -79,29 +76,28 @@ function App() {
     ]
 
     setProjectList(newList)
-    setRenderedProject(projectList.length-1)
+    setRenderedProject(projectList.length - 1)
   }
 
-
   return (
-    <>
-      <Sidebar projectList={projectList} projectSelectHandler={projectSelectHandler} createHandler={createProjectHandler}/>
-      { addingMode ? <NewProject handleCancel={()=>setAddingMode(false)} handleAddProject={addProject}/> : null }
-      {projectList.length < 1 ? 
-            <NoProject 
-                createHandler={createProjectHandler}/> 
-            : <Project 
-                renderedProject={projectList[renderedProject]} 
-                deleteProjectHandler={deleteProjectHandler}
-                addTaskHandler={addTaskHandler}
-                deleteTaskHandler={deleteTaskHandler}
-            /> }
+    <div className="flex w-screen min-h-screen">
+      <Sidebar projectList={projectList} projectSelectHandler={projectSelectHandler} createHandler={createProjectHandler} />
 
-    
-
-    
-    
-    </>
+      <div className="grow mx-6 my-10">
+        {addingMode ? <NewProject handleCancel={() => setAddingMode(false)} handleAddProject={addProject} /> : null}
+        {projectList.length < 1 & !addingMode ?
+          <NoProject
+            createHandler={createProjectHandler} />
+          : null}
+        {projectList.length > 0 & !addingMode ?
+          <Project
+            renderedProject={projectList[renderedProject]}
+            deleteProjectHandler={deleteProjectHandler}
+            addTaskHandler={addTaskHandler}
+            deleteTaskHandler={deleteTaskHandler} />
+          : null}
+      </div>
+    </div>
   );
 }
 
