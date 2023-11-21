@@ -1,6 +1,6 @@
-# Comparison with instructor's solution
+Comparison with instructor's solution
 
-## Styling differences
+Styling differences
 
 General:  Has media queries and hover effects. Note that classes can be stored in variables and then used with curly braces afterwards.
 
@@ -14,7 +14,7 @@ Button: Button component added and reused.
 
 Background colour changed for the active project.
 
-## Functionality differences
+Functionality differences
 
 Object managed as state instead of 3 different useStates. The keys are currentAction, selectedProjectId, projects.
 
